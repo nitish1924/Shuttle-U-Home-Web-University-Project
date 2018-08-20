@@ -1,0 +1,20 @@
+{
+  "name": "project2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "firebase": "^5.4.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-html-table-to-excel": "^2.0.0",
+    "react-scripts": "1.1.4",
+    "react-table": "^6.8.6",
+    "tachyons": "^4.10.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

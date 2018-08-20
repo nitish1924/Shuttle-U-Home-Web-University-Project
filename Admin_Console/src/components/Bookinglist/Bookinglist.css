@@ -1,0 +1,18 @@
+td {
+    border: 1px solid black;
+    text-align: center;
+}
+
+th {
+  text-align: left;
+   border: 1px solid black;
+   text-align: center;
+}
+.record {
+  margin: 10px;
+}
+table {
+  width: 100%;
+   border: 1px solid black;
+   text-align: center;
+}
