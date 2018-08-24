@@ -42,11 +42,9 @@ const handleBook = (req,res,db,dateFormat)=>{
 		else{
 			db.ref('SupervisorName').once("value")
 			.then((snapshot) => {
-				console.log(snapshot.child('Name').val())
 	    		return snapshot.child('Name').val();
 			})
 			.then((supervisor) => {
-				console.log(supervisor)
 				db.ref('Booking').push({ // set can be used instead of push
 				    Name: name,
 				    SUID: suid,

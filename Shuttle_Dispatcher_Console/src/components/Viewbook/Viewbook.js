@@ -187,9 +187,11 @@ const options = [
 const filterOptions = createFilterOptions({options });
 const initialState = {
   waitList: '',
-  snapshot:''
+  snapshot:'',
+  waitingCount:0
 }
 
+var count = 0;
 
 class Viewbook extends React.Component {
 	constructor(){
@@ -200,8 +202,14 @@ class Viewbook extends React.Component {
 		//const w = db.ref('Booking').orderByChild('Status').equalTo('waiting');
 		const w = db.ref('Booking');
   		w.on('value',(snapshot) => {
+  			count = 0;
 	  		if(snapshot.numChildren()>0){
-				console.log(snapshot.val());
+				snapshot.forEach((childSnapshot) => {
+	    			if(childSnapshot.child('Status').val()==="waiting"){
+	    				count++;
+	    			}
+	    		})
+	    		this.setState({waitingCount:count});
 				this.setState({waitList:''});
 		  		this.setState({waitList:snapshot.val()});
 		  		this.setState({snapshot:snapshot});
@@ -228,71 +236,132 @@ cancelBooking = (SUID) =>{
 	});
 }
 
-onNameChange = (param, e) =>{
-	console.log('Parameter', param);
-  	console.log('Event', e.target.value);
-  	fetch('http://localhost:3000/editbooking',{
-			method: 'put',
-			headers: {'Content-Type':'application/json'},
-			body: JSON.stringify({  //stringify javascript object
-				value: e.target.value,
-				field: 'Name',
-				time: param
-			})
-	})
-	.then(response=>response.json())
-	.then(data=>{
-		window.alert(data);
-		const waitlist = this.state.waitList;
-		this.setState({waitList:''})
-		this.setState({waitList:waitlist})
-	})
-	.catch(console.log("unable to update"))
-} 
-onSUIDChange = (param, e) =>{
-	var status=0;
-	const suidVal=e.target.value;
-	db.ref('Booking').once("value")
-	.then((snapshot)=>{
-		snapshot.forEach((childSnapshot) => {
-	    	if(childSnapshot.child('SUID').val()===suidVal){
-				status=1;
-	    		
-	    	}
+onNameChange = (param,name, e) =>{
+	if(name==="enter" && e.keyCode===13){
+	  	fetch('http://localhost:3000/editbooking',{
+				method: 'put',
+				headers: {'Content-Type':'application/json'},
+				body: JSON.stringify({  //stringify javascript object
+					value: e.target.value,
+					field: 'Name',
+					time: param
+				})
 		})
-	})
-	.then(data=>{
-		if(status===1){
-			window.alert("SUID cannot be edited as this SUID already exists in Booking");
+		.then(response=>response.json())
+		.then(data=>{
+			window.alert(data);
 			const waitlist = this.state.waitList;
-		this.setState({waitList:''})
-		this.setState({waitList:waitlist})
-		}
-		else{
-		fetch('http://localhost:3000/editbooking',{
-			method: 'put',
-			headers: {'Content-Type':'application/json'},
-			body: JSON.stringify({  //stringify javascript object
-				value: suidVal,
-				field: 'SUID',
-				time: param
-			})
-	})
-	.then(response=>response.json())
-	.then(data=>{
-		window.alert(data);
-		const waitlist = this.state.waitList;
-		this.setState({waitList:''})
-		this.setState({waitList:waitlist})
-	})
-	.catch(console.log("unable to update"))
+			this.setState({waitList:''})
+			this.setState({waitList:waitlist})
+		})
+		.catch(console.log("unable to update"))
 	}
-	})
+	else if(name==="blur"){
+		fetch('http://localhost:3000/editbooking',{
+				method: 'put',
+				headers: {'Content-Type':'application/json'},
+				body: JSON.stringify({  //stringify javascript object
+					value: e.target.value,
+					field: 'Name',
+					time: param
+				})
+		})
+		.then(response=>response.json())
+		.then(data=>{
+			window.alert(data);
+			const waitlist = this.state.waitList;
+			this.setState({waitList:''})
+			this.setState({waitList:waitlist})
+		})
+		.catch(console.log("unable to update"))
+	}
 } 
-onHouseChange = (param, e) =>{
-	console.log('Parameter', param);
-  	console.log('Event', e.target.value);
-  	fetch('http://localhost:3000/editbooking',{
+onSUIDChange = (param,name,e) =>{
+	var status = 0;
+	if(name==="enter" && e.keyCode===13){
+		console.log("enter")
+		const suidVal=e.target.value;
+		db.ref('Booking').once("value")
+		.then((snapshot)=>{
+			snapshot.forEach((childSnapshot) => {
+		    	if(childSnapshot.child('SUID').val()===suidVal){
+					status=1;
+		    		
+		    	}
+			})
+		})
+		.then(data=>{
+			if(status===1){
+				window.alert("SUID cannot be edited as this SUID already exists in Booking");
+				const waitlist = this.state.waitList;
+				this.setState({waitList:''})
+				this.setState({waitList:waitlist})
+			}
+			else{
+				fetch('http://localhost:3000/editbooking',{
+					method: 'put',
+					headers: {'Content-Type':'application/json'},
+					body: JSON.stringify({  //stringify javascript object
+						value: suidVal,
+						field: 'SUID',
+						time: param
+					})
+				})
+				.then(response=>response.json())
+				.then(data=>{
+					window.alert(data);
+					const waitlist = this.state.waitList;
+					this.setState({waitList:''})
+					this.setState({waitList:waitlist})
+				})
+				.catch(console.log("unable to update"))
+			}
+		})
+	}
+	else if(name==="blur"){
+		const suidVal=e.target.value;
+		db.ref('Booking').once("value")
+		.then((snapshot)=>{
+			snapshot.forEach((childSnapshot) => {
+		    	if(childSnapshot.child('SUID').val()===suidVal){
+					status=1;
+		    		
+		    	}
+			})
+		})
+		.then(data=>{
+			if(status===1){
+				window.alert("SUID cannot be edited as this SUID already exists in Booking");
+				const waitlist = this.state.waitList;
+				this.setState({waitList:''})
+				this.setState({waitList:waitlist})
+			}
+			else{
+				fetch('http://localhost:3000/editbooking',{
+					method: 'put',
+					headers: {'Content-Type':'application/json'},
+					body: JSON.stringify({  //stringify javascript object
+						value: suidVal,
+						field: 'SUID',
+						time: param
+					})
+				})
+				.then(response=>response.json())
+				.then(data=>{
+					window.alert(data);
+					const waitlist = this.state.waitList;
+					this.setState({waitList:''})
+					this.setState({waitList:waitlist})
+				})
+				.catch(console.log("unable to update"))
+			}
+		})
+	}
+	
+} 
+onHouseChange = (param,name, e) =>{
+	if(name==="enter" && e.keyCode===13){
+		fetch('http://localhost:3000/editbooking',{
 			method: 'put',
 			headers: {'Content-Type':'application/json'},
 			body: JSON.stringify({  //stringify javascript object
@@ -310,15 +379,43 @@ onHouseChange = (param, e) =>{
 		this.setState({waitList:waitlist})
 	})
 	.catch(console.log("unable to update"))
+	}
+	else if(name==="blur"){
+		fetch('http://localhost:3000/editbooking',{
+			method: 'put',
+			headers: {'Content-Type':'application/json'},
+			body: JSON.stringify({  //stringify javascript object
+				value: e.target.value,
+				field: 'HouseNo',
+				time: param
+			})
+
+	})
+	.then(response=>response.json())
+	.then(data=>{
+		window.alert(data);
+		const waitlist = this.state.waitList;
+		this.setState({waitList:''})
+		this.setState({waitList:waitlist})
+	})
+	.catch(console.log("unable to update"))
+		
+	}
+  	
 } 
 onStreetChange = (value, time) =>{
-	console.log('value', value);
-  	console.log('Time', time);
+	var val=""
+	try{
+		val=value.value
+	}
+	catch(err){
+		val=""
+	}
   	fetch('http://localhost:3000/editbooking',{
 			method: 'put',
 			headers: {'Content-Type':'application/json'},
 			body: JSON.stringify({  //stringify javascript object
-				value: value,
+				value: val,
 				field: 'StreetAddress',
 				time: time
 			})
@@ -332,16 +429,21 @@ onStreetChange = (value, time) =>{
 columns = [
   {
     Header: 'Name',
+    sortable:false,
+    filterable:false,	
     accessor: 'Name',
     Cell: row => (row.row.Status==='waiting'
     				?	<input 
-		    				type='tex'  
+		    				type='tex' 
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white" 
 		    				defaultValue={row.row.Name} 
 		    				style={{width:150}}
-		    				onBlur={this.onNameChange.bind(this, row.row.Time)} 
+		    				onKeyUp={this.onNameChange.bind(this, row.row.Time,"enter")}
+		    				onBlur={this.onNameChange.bind(this, row.row.Time,"blur")} 
 	    				/>
     				:<input 
-		    				type='tex'  
+		    				type='tex' 
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white" 
 		    				value={row.row.Name}
 		    				style={{width:150}}
 		    				readOnly	
@@ -350,16 +452,21 @@ columns = [
   },
   {
 	Header: 'SUID',
+	sortable:false,
+	filterable:false,
     accessor: 'SUID',
     Cell: row => (row.row.Status==='waiting'
     				?	<input 
-		    				type='tex'  
+		    				type='tex' 
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white" 
 		    				defaultValue={row.row.SUID} 
 		    				style={{width:150}}
-		    				onBlur={this.onSUIDChange.bind(this, row.row.Time)} 
+		    				onKeyUp={this.onSUIDChange.bind(this, row.row.Time,"enter")}
+		    				onBlur={this.onSUIDChange.bind(this, row.row.Time,"blur")} 
 	    				/>
     				:<input 
 		    				type='tex'  
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white"
 		    				value={row.row.SUID}
 		    				style={{width:150}}
 		    				readOnly	
@@ -368,19 +475,26 @@ columns = [
   },
   {
   	Header: 'Address',
+  	sortable:false,
+  	filterable:false,
   	columns: [
                 {
                   Header: "House No.",
                   accessor: "HouseNo",
+                  sortable:false,
+                  filterable:false,
                    Cell: row => (row.row.Status==='waiting'
     				?	<input 
 		    				type='tex'  
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white"
 		    				defaultValue={row.row.HouseNo} 
-		    				onBlur={this.onHouseChange.bind(this, row.row.Time)} 
+		    				onKeyUp={this.onHouseChange.bind(this, row.row.Time,"enter")}
+		    				onBlur={this.onHouseChange.bind(this, row.row.Time,"blur")} 
 		    				style={{width:150}}
 	    				/>
     				:<input 
 		    				type='tex'  
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white"
 		    				value={row.row.HouseNo}
 		    				style={{width:150}}
 		    				readOnly	
@@ -390,17 +504,21 @@ columns = [
                 {
                   Header: "Street Address",
                   accessor: "StreetAddress",
+                  sortable:false,
+                  filterable:false,
                   Cell: row => (row.row.Status==='waiting'
     				?<Select
+    					className="b pa2 input-reset ba bg-transparent hover-bg-black"
 				        options={options}
 				        filterOptions={filterOptions}
 				        value={row.row.StreetAddress}
 				        style={{width:150}}
-				        onChange={(val)=>this.onStreetChange(val.value, row.row.Time)}
+				        onChange={(val)=>this.onStreetChange(val, row.row.Time)}
     				/>	
     				:<input 
 		    				type='tex'  
 		    				value={row.row.StreetAddress}
+		    				className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white"
 		    				style={{width:150}}
 		    				readOnly	
 	    				/>
@@ -410,18 +528,26 @@ columns = [
   },
   {
 	Header: 'Date',
-    accessor: 'Date'
+    accessor: 'Date',
+    sortable:false,
+    filterable:false,
   },
   {
 	Header: 'SignIn Time',
+	sortable:false,
+	filterable:false,
     accessor: 'Time'
   },
   {
 	Header: 'Status',
+	sortable:false,
+	filterable:false,
     accessor: 'Status'
   },
   {
   		id: 'button',
+  		sortable:false,
+  		filterable:false,
 		accessor: 'SUID',
 		Cell: row => (row.row.Status==='waiting'
 				? <a onClick={()=>this.cancelBooking(row.row.SUID)} className='f3 link dim black underline pa3 pointer'>Delete</a>
@@ -436,6 +562,7 @@ columns = [
 		return(
 			<div>
 				<h1>Waiting List</h1>
+				<h2>No. Of Student Waiting : {this.state.waitingCount}</h2>
 				<ReactTable
 				    columns={this.columns}
 				    data={Array.from(Object.values(this.state.waitList))}

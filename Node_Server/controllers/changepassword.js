@@ -5,7 +5,6 @@ const handlePassword = (req,res,auth)=>{
 			return res.json("Password reset email sent to employee registered email address");
 		})
 		.catch((error)=>{
-			console.log(error.message);
 			return res.json(error.message);
 		});
 }

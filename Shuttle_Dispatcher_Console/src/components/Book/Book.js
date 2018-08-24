@@ -243,7 +243,7 @@ class Book extends React.Component {
 	render(){
 		return(
 			<div>
-				<table className='bg-white'>
+				<table>
 				<caption><h1>Book</h1></caption>
 				<tbody>
 				<tr>
@@ -280,8 +280,7 @@ class Book extends React.Component {
 				        onChange = {this.onHouseChange}
 				    />
 					<Select
-						className="b pa2 input-reset ba"
-				        options={options}
+						className="b pa2 input-reset ba bg-transparent hover-bg-black"				        options={options}
 				        filterOptions={filterOptions}
 				        value={this.state.address}
 				        onChange={val => this.onAddressChange(val)}

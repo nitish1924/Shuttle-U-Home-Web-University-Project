@@ -14,7 +14,6 @@ const handleViewBookAdmin = (req,res,db)=>{
 
 	    			if(startMoment <= (moment(childSnapshot.key,"MM-DD-YYYY")) 
 	    				&& (moment(childSnapshot.key,"MM-DD-YYYY")) <= endMoment){
-		    				console.log(childSnapshot.key)
 		    				data.push(childSnapshot);
 	    			}
 

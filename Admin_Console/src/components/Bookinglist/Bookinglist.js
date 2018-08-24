@@ -1,7 +1,7 @@
 import React from 'react';
 import './Bookinglist.css';
-
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 class Bookinglist extends React.Component {
  
     constructor(props) {
@@ -63,7 +63,7 @@ class Bookinglist extends React.Component {
 	  const [key, value] = props.student;
 	  return (
 	    <tr>
-	      <td>{value.Name}</td>
+	      <td colSpan="2">{value.Name}</td>
 	      <td>{key}</td>
 	      <td>{value.SigninTime}</td>
 	      <td>{value.Address}</td>
@@ -79,16 +79,16 @@ class Bookinglist extends React.Component {
 	        <thead>
 	          <tr>
 	          	<th>Trip {++this.state.trip}</th>
-	            <th>Date</th><td>{value.Date}</td>
-	            <th>Departure<br/>Time:</th><td>{value.DepartureTime}</td>
-	            <th>Return<br/>Time</th><td>{value.ReturnTime}</td>
-	            <th>No. Of<br/>passengers</th><td>{value.NumberOfPassengers}</td>
-	            <th>Supervisor</th><td>{value.SupervisorName}</td>
-	            <th>Driver</th><td>{value.DriverName}</td>
+	            <th>Date : {value.Date}</th>
+	            <th>Departure Time : {value.DepartureTime}</th>
+	            <th>Return Time : {value.ReturnTime}</th>
+	            <th>No. Of passengers : {value.NumberOfPassengers}</th>
+	            <th>Supervisor : {value.SupervisorName}</th>
+	            <th>Driver : {value.DriverName}</th>
 	          </tr>
-	          <tr><th colSpan="6">Passenger Details</th></tr>
+	          <tr><th colSpan="7">Passenger Details</th></tr>
 	          <tr>
-	            <th>Name</th>
+	            <th colSpan="2">Name</th>
 	            <th>SUID</th>
 	            <th>SignInTime</th>
 	            <th>Address</th>
@@ -100,6 +100,8 @@ class Bookinglist extends React.Component {
 	           {Object.entries(value.Students).map(s => (
 	             <this.Student key={s[0]} student={s}/>
 	           ))}
+	           <tr> <td colSpan="7"> </td></tr>
+	           <br/>
 	         </tbody>
 	     </div>
 	  );
@@ -113,15 +115,15 @@ class Bookinglist extends React.Component {
     				<legend style={{background: '000',padding: '3px 6px'}}>Choose trip dates</legend>
     				<div>
         				<label htmlFor="start">Start</label>
-        				<input type="date" id="start" name="trip" onChange={this.startChange}/>
+        				<input type="date" className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white" id="start" name="trip" onChange={this.startChange}/>
    					</div>
 
     				<div>
         				&nbsp;&nbsp;<label htmlFor="end">End</label>
-        				<input type="date" id="end" name="trip" onChange={this.endChange}/>
+        				<input type="date" className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white" id="end" name="trip" onChange={this.endChange}/>
     				</div>
     				<div>
-    					<input type="submit" id ="submit" onClick={this.onSubmit}/>
+    					<input type="submit" className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" id ="submit" onClick={this.onSubmit}/>
     				</div>
 
 				</fieldset>

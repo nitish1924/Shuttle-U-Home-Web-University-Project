@@ -40,6 +40,13 @@ class Registerdriver extends React.Component {
 		})
 		.then(response=>response.json())
 		.then(data=>{
+			if (data === "Registered Successfuly!"){
+				this.setState({
+					email : '',
+					password : '',
+					name : ''
+				})
+			}
 			this.props.errorValidation(data);
 		})
 		.catch(error=>this.props.errorValidation(error))
@@ -60,6 +67,7 @@ class Registerdriver extends React.Component {
 					        type="email" 
 					        name="email-address"  
 					        id="dname" 
+					        value={this.state.name}
 					        onChange={this.onNameChange}
 				        />
 				      </div>
@@ -70,6 +78,7 @@ class Registerdriver extends React.Component {
 					        type="email" 
 					        name="email-address"  
 					        id="demail-address" 
+					        value={this.state.email}
 					        onChange={this.onEmailChange}
 				        />
 				      </div>
@@ -80,6 +89,7 @@ class Registerdriver extends React.Component {
 					        type="password" 
 					        name="password"  
 					        id="dpassword" 
+					        value={this.state.password}
 					        onChange={this.onPasswordChange}
 				        />
 				      </div>

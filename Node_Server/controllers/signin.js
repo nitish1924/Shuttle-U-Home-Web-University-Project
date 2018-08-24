@@ -3,19 +3,18 @@ const handleSignin = (req,res,auth,db)=>{
 	if(!email||!password){ // checking blank fields
 		return res.status(400).json('All fields are Mandatory!');
 	}
-
+	var flag =  "not dispatcher";
 	auth.signInWithEmailAndPassword(email, password)
 	.then((user)=>{
-		console.log(user.user.uid)
 		db.ref('Users/Supervisors').once("value")
 		.then((snapshot) => {
 		    snapshot.forEach((Snapshot) => {
 		    	if(Snapshot.child('UserId').val()===user.user.uid){
 		     	db.ref('SupervisorName').update({Name:Snapshot.child('Name').val()});
-		     	return res.json(Snapshot.child('Name').val());
+		     	flag = Snapshot.child('Name').val()
 		     	}
-		     	return res.json("not dispatcher")
 		  	});
+		  	return res.json(flag);
 		  	//return res.status(400).json("Trouble logging in....Contact Admin");
 		});
 	})

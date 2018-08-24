@@ -15,7 +15,6 @@ const handleUser = (req,res,db,dbAdmin)=>{
 			return res.json("User Deleted Successfully");
 		})
 		.catch((error)=>{
-			console.log(error.message);
 			return res.json(error.message);
 		});
 }
