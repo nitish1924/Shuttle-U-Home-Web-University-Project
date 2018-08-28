@@ -2,6 +2,11 @@ import React from 'react';
 import './Bookinglist.css';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
+const style = {
+	backgroundColor:'#BFBFBF',
+	border: '1px solid black'
+}
+
 class Bookinglist extends React.Component {
  
     constructor(props) {
@@ -16,12 +21,10 @@ class Bookinglist extends React.Component {
    	startChange=(e)=>{
    		this.setState({trip:0})
     	this.setState({start:e.target.value})
-    	console.log('start',e.target.value)
     }
     endChange=(e)=>{
     	this.setState({trip:0})
     	this.setState({end:e.target.value})
-    	console.log('end',e.target.value)
     }
     status='';
     onSubmit=()=>{
@@ -40,7 +43,6 @@ class Bookinglist extends React.Component {
 			catch(err){
 				console.log(err);
 			}
-			
 			return response.json();
 		})
 		.then(res=>{
@@ -54,21 +56,18 @@ class Bookinglist extends React.Component {
 				this.setState({trip:0})
 			}
 		})
-		.then(()=>{
-			console.log(this.state.data);
-		})
 		.catch(error=>this.props.errorValidation("Some Technical glitches....Contact Admin!"))
     }
     Student = (props) => {
 	  const [key, value] = props.student;
 	  return (
 	    <tr>
-	      <td colSpan="2">{value.Name}</td>
-	      <td>{key}</td>
-	      <td>{value.SigninTime}</td>
-	      <td>{value.Address}</td>
-	      <td>{value.SupervisorName}</td>
-	      <td>{value.DropOffTime}</td>
+	      <td colSpan="2" style={{border: '1px solid black'}}>{value.Name}</td>
+	      <td style={{border: '1px solid black'}}>{key}</td>
+	      <td style={{border: '1px solid black'}}>{value.SigninTime}</td>
+	      <td style={{border: '1px solid black'}}>{value.Address}</td>
+	      <td style={{border: '1px solid black'}}>{value.SupervisorName}</td>
+	      <td style={{border: '1px solid black'}}>{value.DropOffTime}</td>
 	    </tr>
 	  );
 	}
@@ -78,29 +77,30 @@ class Bookinglist extends React.Component {
 	    <div className="record">
 	        <thead>
 	          <tr>
-	          	<th>Trip {++this.state.trip}</th>
-	            <th>Date : {value.Date}</th>
-	            <th>Departure Time : {value.DepartureTime}</th>
-	            <th>Return Time : {value.ReturnTime}</th>
-	            <th>No. Of passengers : {value.NumberOfPassengers}</th>
-	            <th>Supervisor : {value.SupervisorName}</th>
-	            <th>Driver : {value.DriverName}</th>
+	          	<th style={style}>Trip {++this.state.trip}</th>
+	            <th style={style}>Date : {value.Date}</th>
+	            <th style={style}>Departure Time : {value.DepartureTime}</th>
+	            <th style={style}>Return Time : {value.ReturnTime}</th>
+	            <th style={style}>No. Of passengers : {value.NumberOfPassengers}</th>
+	            <th style={style}>Supervisor : {value.SupervisorName}</th>
+	            <th style={style}>Driver : {value.DriverName}</th>
 	          </tr>
-	          <tr><th colSpan="7">Passenger Details</th></tr>
+	          <tr><th colSpan="7" style={style}>Passenger Details</th></tr>
 	          <tr>
-	            <th colSpan="2">Name</th>
-	            <th>SUID</th>
-	            <th>SignInTime</th>
-	            <th>Address</th>
-	            <th>Supervisor</th>
-	            <th>Dropoff Time</th>
+	            <th colSpan="2" style={style}>Name</th>
+	            <th style={style}>SUID</th>
+	            <th style={style}>SignInTime</th>
+	            <th style={style}>Address</th>
+	            <th style={style}>Supervisor</th>
+	            <th style={style}>Dropoff Time</th>
 	          </tr>
 	         </thead>
 	         <tbody>
 	           {Object.entries(value.Students).map(s => (
 	             <this.Student key={s[0]} student={s}/>
 	           ))}
-	           <tr> <td colSpan="7"> </td></tr>
+	           <tr> <td colSpan="7" style={{border:'None'}}> </td></tr>
+	           <tr> <td colSpan="7" style={{border:'None'}}> </td></tr>
 	           <br/>
 	         </tbody>
 	     </div>

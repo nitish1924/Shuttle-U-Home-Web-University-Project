@@ -6,9 +6,7 @@ td {
 
 th {
   text-align: left;
-   border: 1px solid black;
-   text-align: center;
-   background-color:#BFBFBF;
+  text-align: center;
 }
 .record {
   margin: 30px;

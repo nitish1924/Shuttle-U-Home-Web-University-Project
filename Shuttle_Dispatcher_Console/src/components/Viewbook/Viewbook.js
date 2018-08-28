@@ -222,14 +222,12 @@ class Viewbook extends React.Component {
 
 
 cancelBooking = (SUID) =>{
-	console.log(SUID);
 	const w = db.ref('Booking');
 
 	w.once("value")
 	.then((snapshot) => {
 	    snapshot.forEach((childSnapshot) => {
 	    	if(childSnapshot.child('SUID').val()===SUID){
-		     	console.log(childSnapshot.key);
 		     	db.ref('Booking/'+childSnapshot.key).remove();
 	     	}
 	  	});
@@ -279,7 +277,6 @@ onNameChange = (param,name, e) =>{
 onSUIDChange = (param,name,e) =>{
 	var status = 0;
 	if(name==="enter" && e.keyCode===13){
-		console.log("enter")
 		const suidVal=e.target.value;
 		db.ref('Booking').once("value")
 		.then((snapshot)=>{
